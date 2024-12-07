@@ -1,9 +1,7 @@
 from typing import Tuple
 
-import os
-from tqdm.auto import tqdm
-
 import torch
+from tqdm.auto import tqdm
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import StepLR
 
