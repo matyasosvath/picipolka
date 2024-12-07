@@ -9,7 +9,7 @@ ARGS="--project-name thesis \
     --dataset-name mnist
     --optimizer adam \
     --batch-size 128 \
-    --n-epochs 10 \
+    --n-epochs 20 \
     --lr 0.01 \
     --gamma 0.7 \
     --use-cuda true \

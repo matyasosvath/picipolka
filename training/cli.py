@@ -26,10 +26,11 @@ def cli() -> None:
     parser.add_argument('--model-name', type=str, default='vit', metavar='S', help='model name or path')
     parser.add_argument('--model-type', type=str, default='vision', metavar='S', help='model type e.g. nlp, vision')
     parser.add_argument('--tokenizer-name', type=str, default=None, metavar='S', help='tokenizer name or path')
-    parser.add_argument('--dataset-type', type=str, default='vision', metavar='S', help='dataset type e.g. nlp, vision')
+    parser.add_argument('--dataset-type', type=str, default='pre-built', metavar='S', help='dataset type e.g. nlp, vision')
     parser.add_argument('--dataset-name', type=str, default='mnist', metavar='S', help='dataset name(s)')
     parser.add_argument('--project-name', type=str, default=None, metavar='S', help='project name')
     parser.add_argument('--batch-size', type=int, default=128, metavar='N', help='input batch size for training (default: 128)')
+    parser.add_argument('--optimizer', type=str, default="adam", metavar='N', help='optimizer name (default: adam)')
     parser.add_argument('--n-epochs', type=int, default=None, help='-')
     parser.add_argument('--lr', type=float, default=0.01, metavar='N', help='learning rate')
     parser.add_argument('--gamma', type=float, default=0.7, metavar='M', help='learning rate step gamma (default: 0.7)')
@@ -40,12 +41,10 @@ def cli() -> None:
     parser.add_argument('--save-model', action='store_true', default=False, help='for saving the current model')
     parser.add_argument('--dry-run', action='store_true', default=False, help='quickly check a single pass')
     parser.add_argument('--log-interval', type=int, default=10, metavar='N', help='how many batches to wait before logging training status')
-    parser.add_argument('--help', type=int, default=10, metavar='N', help='see a full list of configurable options')
 
     args = parser.parse_args()
 
     use_cuda = args.use_cuda and torch.cuda.is_available()
-    use_mps = not args.use_mps and torch.backends.mps.is_available()
 
     random.seed(args.seed)
     numpy.random.seed(args.seed)
@@ -54,8 +53,6 @@ def cli() -> None:
 
     if use_cuda:
         device = torch.device(f'cuda{args.cuda_id}') if args.cuda_id else torch.device('cuda')
-    elif use_mps:
-        device = torch.device("mps")
     else:
         device = torch.device("cpu")
 
