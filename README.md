@@ -1,3 +1,3 @@
 # Picipolka
 
-Tools for working with language models and stuff.
+Tools for working with models and stuff.

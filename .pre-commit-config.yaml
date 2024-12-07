@@ -1,0 +1,21 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        entry: python3 -m ruff check training/
+        language: system
+        always_run: true
+        pass_filenames: false
+      - id: mypy
+        name: mypy
+        entry: python3 -m mypy training/ --strict-equality
+        language: system
+        always_run: true
+        pass_filenames: false
+      - id: pylint
+        name: pylint
+        entry: python3 -m pylint training/
+        language: system
+        always_run: true
+        pass_filenames: false
