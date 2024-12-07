@@ -1,0 +1,5 @@
+thop
+torch
+torchtune
+torchvision
+tqdm
