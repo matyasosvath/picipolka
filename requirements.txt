@@ -1,5 +1,6 @@
 thop
+tqdm
 torch
 torchtune
 torchvision
-tqdm
+transformers

@@ -5,8 +5,7 @@ from torch import nn
 
 
 @dataclass
-class ModelConfig:
-
+class ModelConfig: # tiny-ViT
     hidden_size: int = 192
     n_heads: int = 3
     n_layers: int = 3
@@ -15,12 +14,11 @@ class ModelConfig:
     mlp_dropout: float = 0.1
     qkv_bias: bool = False
 
-    n_classes: int = 10
-    channels: int = 1
-    patch_size: int = 7
-    img_size: int = 28
-    height: int = 28
-    width: int = 28
+    # defined later
+    n_classes: int = -1
+    channels: int = -1
+    patch_size: int = -1
+    img_size: int = -1
 
 
 class PatchEmbedding(nn.Module):
