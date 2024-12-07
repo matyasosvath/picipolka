@@ -28,6 +28,7 @@ def cli() -> None:
     parser.add_argument('--tokenizer-name', type=str, default=None, metavar='S', help='tokenizer name or path')
     parser.add_argument('--dataset-type', type=str, default='pre-built', metavar='S', help='dataset type e.g. nlp, vision')
     parser.add_argument('--dataset-name', type=str, default='mnist', metavar='S', help='dataset name(s)')
+    parser.add_argument('--fine-tune', type=lambda x: x.lower()=='true', default=False, metavar='S', help='fine-tune eval')
     parser.add_argument('--project-name', type=str, default=None, metavar='S', help='project name')
     parser.add_argument('--batch-size', type=int, default=128, metavar='N', help='input batch size for training (default: 128)')
     parser.add_argument('--optimizer', type=str, default="adam", metavar='N', help='optimizer name (default: adam)')
@@ -62,7 +63,7 @@ def cli() -> None:
             args.dataset_type, args.dataset_name, args.batch_size, args.num_workers
     )
 
-    model = models.get_model(args.model_name, dataset_config)
+    model = models.get_model(args.model_name, args.fine_tune, dataset_config)
 
     train.train(model, train_dataloader, test_dataloader, args.lr, args.gamma, args.n_epochs, device)
 

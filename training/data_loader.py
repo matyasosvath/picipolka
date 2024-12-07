@@ -12,7 +12,7 @@ def create_image_dataloaders(
 ):
     transform =  get_transform_fn(dataset_name)
 
-    train_dataset, test_dataset, class_names = create_image_dataset(dataset_type, dataset_name, transform)
+    train_dataset, test_dataset, dataset_config = create_image_dataset(dataset_type, dataset_name, transform)
 
     train_dataloader = DataLoader(
         train_dataset,
@@ -30,7 +30,7 @@ def create_image_dataloaders(
         pin_memory=True,
     )
 
-    return train_dataloader, test_dataloader, class_names
+    return train_dataloader, test_dataloader, dataset_config
 
 
 def create_image_dataset(
@@ -83,10 +83,11 @@ def get_manual_image_dataset(
 ):
     train_dataset = datasets.ImageFolder(f"{dataset_name}/train", transform=transform)
     test_dataset = datasets.ImageFolder(f"{dataset_name}/test", transform=transform)
+    dataset_config = {}
 
-    class_names = train_dataset.classes
+    dataset_config["n_classes"] = len(train_dataset.classes)
 
-    return train_dataset, test_dataset, class_names
+    return train_dataset, test_dataset, dataset_config
 
 
 def get_transform_fn(
