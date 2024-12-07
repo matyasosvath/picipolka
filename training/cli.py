@@ -26,14 +26,15 @@ def cli() -> None:
     parser.add_argument('--model-name', type=str, default='vit', metavar='S', help='model name or path')
     parser.add_argument('--model-type', type=str, default='vision', metavar='S', help='model type e.g. nlp, vision')
     parser.add_argument('--tokenizer-name', type=str, default=None, metavar='S', help='tokenizer name or path')
+    parser.add_argument('--dataset-type', type=str, default='vision', metavar='S', help='dataset type e.g. nlp, vision')
     parser.add_argument('--dataset-name', type=str, default='mnist', metavar='S', help='dataset name(s)')
     parser.add_argument('--project-name', type=str, default=None, metavar='S', help='project name')
     parser.add_argument('--batch-size', type=int, default=128, metavar='N', help='input batch size for training (default: 128)')
-    parser.add_argument('--num-epochs', type=int, default=None, help='-')
+    parser.add_argument('--n-epochs', type=int, default=None, help='-')
     parser.add_argument('--lr', type=float, default=0.01, metavar='N', help='learning rate')
     parser.add_argument('--gamma', type=float, default=0.7, metavar='M', help='learning rate step gamma (default: 0.7)')
     parser.add_argument('--seed', type=int, default=42, metavar='S', help='random seed (default: 42)')
-    parser.add_argument('--num-workers', type=int, default=None, help='the number of CPUs workers')
+    parser.add_argument('--num-workers', type=int, default=4, help='the number of CPUs workers')
     parser.add_argument('--use-cuda', type=lambda x: x.lower()=='true', default=True, metavar='S', help='gpu use')
     parser.add_argument('--cuda-id', type=int, default=0, metavar='S', help='gpu id')
     parser.add_argument('--save-model', action='store_true', default=False, help='for saving the current model')
@@ -60,11 +61,13 @@ def cli() -> None:
 
     print(f"Using device: {device}")
 
-    train_dataloader, test_dataloader, dataset_config = data_loader.create_image_dataloaders()
+    train_dataloader, test_dataloader, dataset_config = data_loader.create_image_dataloaders(
+            args.dataset_type, args.dataset_name, args.batch_size, args.num_workers
+    )
 
     model = models.get_model(args.model_name, dataset_config)
 
-    model.to(device)
+    train.train(model, train_dataloader, test_dataloader, args.lr, args.gamma, args.n_epochs, device)
 
     if args.save_model:
         os.makedirs(f"{args.project_name}", exist_ok=True)

@@ -1,12 +1,15 @@
 DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
-DIR="${DIR%/*}/training"
+DIR="${DIR%/*}"
+# DIR="${DIR%/*}/training"
+
+export PYTHONPATH="${DIR}:${PYTHONPATH}"
 
 ARGS="--project-name thesis \
-    --model-name vit \
+    --model-name cnn \
     --dataset-name mnist
     --optimizer adam \
     --batch-size 128 \
-    --num-epochs 10 \
+    --n-epochs 10 \
     --lr 0.01 \
     --gamma 0.7 \
     --use-cuda true \
@@ -14,7 +17,4 @@ ARGS="--project-name thesis \
     --seed 42"
 
 # ensure all processes are killed if the user interrupts the script (with Ctrl+C).
-(trap 'kill 0' SIGINT; \
-python ${DIR}/cli.py $(echo ${ARGS}) \
-    & \
-wait)
+(trap 'kill 0' SIGINT; python ${DIR}/training/cli.py $(echo ${ARGS}) & wait)

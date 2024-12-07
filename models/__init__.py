@@ -1,8 +1,7 @@
 import torch
 
-import models.puli2 as puli2
-import models.puli3sx as puli3sx
-import puli_llumix, vision_transformer, cnn
+from models import vision_transformer, cnn
+from models import puli2, puli3sx, puli_llumix
 
 
 def get_model(model_name: str, config: dict) -> torch.nn.Module:
